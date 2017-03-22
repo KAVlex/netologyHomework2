@@ -10,6 +10,7 @@ const fs = require('fs');
 
 const hide = (path, pokemonList, callback) => {
     try {
+		checkPath(path);
         //Максимальное кол-во покемонов, которое можем спрятать (пункт 1-2)
         let max = (pokemonList.length > max_hide) ?
             max_hide : pokemonList.length;
@@ -44,13 +45,20 @@ const hide = (path, pokemonList, callback) => {
 }
 
 const seek = (path, callback) => {
-    let seekList = new PokemonList();
     try {
+		checkPath(path);
+		let seekList = new PokemonList();
         findPokemonRecursive(path, seekList);
         callback(null, seekList);
     }catch (e){
         callback(error(500, e.message));
     }
+}
+
+const checkPath = (path) => {
+	if(!fs.existsSync(path) || !fs.lstatSync(path).isDirectory()) {
+		throw new Error('Указанная директория не найдена');
+	}
 }
 
 const pad = (str, max) => {
