@@ -8,9 +8,24 @@ const random = require('./random');
 const PokemonList = require('./pokemonList');
 const fs = require('fs');
 
-const hide = (path, pokemonList, callback) => {
+function hide(path, pokemonList, callback) {
+    fs.exists(path, (exists) => {
+        if (exists && fs.lstatSync(path).isDirectory()){
+            let hidenPokemons = null, err = null;
+            try{
+                hidenPokemons = hideSync(path, pokemonList);
+            }catch(e) {
+                err = error(500, e.message);
+            }
+            callback(err, hidenPokemons);
+        }else{
+            callback(error(500, 'Указанная директория не найдена'));
+        }
+    });
+}
+
+const hideSync = (path, pokemonList) => {
     try {
-		checkPath(path);
         //Максимальное кол-во покемонов, которое можем спрятать (пункт 1-2)
         let max = (pokemonList.length > max_hide) ?
             max_hide : pokemonList.length;
@@ -38,27 +53,26 @@ const hide = (path, pokemonList, callback) => {
                 hidenList.push(hidePokemon);
             }
         }
-        callback(null, hidenList);
+        return hidenList;
     }catch (e) {
-        callback(error(500, e.message));
+        throw e;
     }
 }
 
 const seek = (path, callback) => {
-    try {
-		checkPath(path);
-		let seekList = new PokemonList();
-        findPokemonRecursive(path, seekList);
-        callback(null, seekList);
-    }catch (e){
-        callback(error(500, e.message));
-    }
-}
-
-const checkPath = (path) => {
-	if(!fs.existsSync(path) || !fs.lstatSync(path).isDirectory()) {
-		throw new Error('Указанная директория не найдена');
-	}
+    fs.exists(path, (exists) => {
+        if (exists && fs.lstatSync(path).isDirectory()){
+            let seekList = new PokemonList(), err = null;
+            try{
+                findPokemonRecursive(path, seekList);
+            }catch(e) {
+                err = error(500, e.message);
+            }
+            callback(err, seekList);
+        }else{
+            callback(error(500, 'Указанная директория не найдена'));
+        }
+    });
 }
 
 const pad = (str, max) => {

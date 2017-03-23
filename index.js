@@ -22,7 +22,8 @@ if (process.argv.length > 2){
 	if (!path){ 
 		return console.error("Отсутствуют обязательный параметр - путь к папке");
 	}
-	switch (command) {
+    path += !path.endsWith("/") ? "/" : "";
+    switch (command) {
 	  case 'hide':
 		let pokemonData = process.argv[4];
 		if (!pokemonData) {
