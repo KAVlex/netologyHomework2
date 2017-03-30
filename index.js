@@ -38,6 +38,8 @@ if (process.argv.length > 2){
 			console.log("Спрятанные покемоны:");
 			hidenList.show();
 		});
+		console.log("Сообщение которое должно вывестись раньше того как будут спрятаны покемоны, " +
+			"если ф-ция hide работает в асинхронном режиме");
 		break;
 	  case 'seek':
 		hidedseek.seek(path, (error, seekList) => {
@@ -46,6 +48,8 @@ if (process.argv.length > 2){
 			console.log("Найденные покемоны:");
 			seekList.show();
 		});
+		console.log("Сообщение которое должно вывестись раньше того как будут найдены покемоны, " +
+			"если ф-ция seek работает в асинхронном режиме");
 		break;
 	  default:
 		console.error(`Команда ${command} отсутствует`);

@@ -9,8 +9,8 @@ const PokemonList = require('./pokemonList');
 const fs = require('fs');
 
 function hide(path, pokemonList, callback) {
-    fs.exists(path, (exists) => {
-        if (exists && fs.lstatSync(path).isDirectory()){
+    process.nextTick(() => {
+        if (fs.existsSync(path) && fs.lstatSync(path).isDirectory()){
             let hidenPokemons = null, err = null;
             try{
                 hidenPokemons = hideSync(path, pokemonList);
@@ -60,8 +60,8 @@ const hideSync = (path, pokemonList) => {
 }
 
 const seek = (path, callback) => {
-    fs.exists(path, (exists) => {
-        if (exists && fs.lstatSync(path).isDirectory()){
+    process.nextTick(() => {
+        if (fs.existsSync(path) && fs.lstatSync(path).isDirectory()){
             let seekList = new PokemonList(), err = null;
             try{
                 findPokemonRecursive(path, seekList);

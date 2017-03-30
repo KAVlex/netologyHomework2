@@ -6,18 +6,18 @@ const random = require('./random');
 class PokemonList extends Array{
 
     add(name, level){
-        super.push(new Pokemon(name, level));
+        this.push(new Pokemon(name, level));
     }
 
     show(){
         console.log(`Всего покемонов - ${this.length}`);
-        this.map(pokemon => pokemon.show());
+        this.forEach(pokemon => pokemon.show());
         console.log('=================================');
     }
 
     max(){
         let maxLevel = Math.max(...this);
-        return this.filter(pokemon => pokemon.level == maxLevel);
+        return this.find(pokemon => pokemon.level == maxLevel);
     }
 
     spliceRandom(){
