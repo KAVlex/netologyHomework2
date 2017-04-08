@@ -1,7 +1,7 @@
 "use strict";
 
 const Pokemon = require('./pokemon');
-const random = require('./random');
+const random = require('./../module/random');
 
 class PokemonList extends Array{
 
